@@ -12,34 +12,33 @@
 	<h1>B+ Tree</h1>
 </header>
 <main>
-
 	<div class="menu flex">
 		<div>
-			<label> <input id="tree" type="number" value="4"></label>
-			<button id="init_button" onclick="init(3)">Init</button>
+			<label> <input id="degree" type="number" value="4"></label>
+			<button id="init_button" onclick="init(readInput10('degree'))">Init</button>
 		</div>
 		<div>
-			<label> <input id="tree" type="number" value="4"></label>
-			<button id="insert_button" onclick="insert(3)">Insert</button>
+			<label> <input id="input_insert" type="number" value="4"></label>
+			<button id="insert_button" onclick="insert(readInput('input_insert'),readInput10('degree'))">Insert</button>
 		</div>
 		<div>
-			<label> <input id="tree" type="number" value="2"></label>
-			<button id="remove_button" onclick="remove(3)">Remove</button>
+			<label> <input id="input_remove" type="number" value="2"></label>
+			<button id="remove_button" onclick="remove(readInput('input_remove'),readInput10('degree'))">Remove</button>
 		</div>
 		<div>
-			<input id="tree" type="number" value="4">
-			<button id="find_button" onclick="find(3)">Find</button>
+			<input id="input_find" type="number" value="4">
+			<button id="find_button" onclick="find(readInput('input_find'),readInput10('degree'))">Find</button>
 		</div>
 		<div>
-			<button id="ins_button" onclick="ins(3)">Random</button>
+			<button id="random_button" onclick="random(readInput10('degree'))">Random</button>
 		</div>
 		<div>
-			<button id="ins_button" onclick="ins(3)">Clear</button>
+			<button id="clear_button" onclick="clear(readInput10('degree'))">Clear</button>
 		</div>
 		<!--<div>Clear</div>-->
 	</div>
 	<div class="tree flex">
-	  <div id="tree">Show Tree ... </div>
+	  <div id="tree_view">Show Tree ... </div>
 	</div>
 	<div class="tree flex">
 	  <div>
@@ -49,6 +48,10 @@
 </main>
 <footer>
 	<h5>Gladys Calle</h5>
+	<script src="bplustree.js"></script>
+	<script src="interface.js"></script>
+	<script>
+	</script>
 </footer>
 
 </body>
