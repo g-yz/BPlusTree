@@ -65,6 +65,12 @@ footer {
 }
 
 .tree > div {
+  /*height: 50%;*/
+  height: 415px;
+  overflow: auto;
+}
+
+.content > div {
   background-color: var(--background-dark);
   font-weight: bold;
   font-family: Baloo, sans-serif;
