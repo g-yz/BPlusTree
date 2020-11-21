@@ -101,42 +101,50 @@ class Node extends PNode {
 		this.keys = insertSlice(this.keys, K, i);
 	};
 	delete = function(K, poisition, father){
+		console.log(" >> DELETE NODE * " + this.keys[0] + " POSICION : " + poisition );
 		if(father == null){
 			if(this.numberKeys() == 1){
 				return true;
 			} else{
+				this.keys = deleteSlice(this.keys, poisition-1);
+				this.children[poisition] = null;
+				this.children = deleteSlice(this.children, poisition);
 				return false;
 			}
 		}
 
-		console.log(" - DELETE NODE * " + this.keys[0] );
 		this.keys = deleteSlice(this.keys, poisition-1);
 		this.children[poisition] = null;
 		this.children = deleteSlice(this.children, poisition);
 
-		
-
 		//try{
-			if(this.isUnderMinimumCapacity()){
-				console.log(" - UNDER CAPACITY " + father.keys[0] + " " + father.numberKeys());
-				if(father.children[poisition-2] != null && father.children[poisition-2].isStableCapacity()){
-					//merge
-					console.log(" - ROTATE LEFT " + father.keys[0] + " " + father.numberKeys());
-					//father.children[poisition-2].merge(this);
-				}else if(father.children[poisition-1].isStableCapacity()){
-					//merge
-					console.log(" - ROTATE RIGHT " + father.keys[0] + " " + father.numberKeys());
-					//this.merge(father.children[poisition]);
-				}else if(father.children[poisition-3] != null ){
-					console.log(" - BALANCEAR IZQUIERDA" + father.children[poisition-2].keys[0] + " " + father.numberKeys())
-					father.children[poisition-2].merge(this);
-				}else if(father.children[poisition -1] != null ){
-					console.log(" - BALANCEAR DERECHA" + this.keys[0] + " " + father.children[poisition-1].keys[0] + " " +  father.numberKeys());
-					this.merge(father.children[poisition-1]);
-					return true;
-				}
-				return false;
+		var next = poisition+1;
+		var prev = poisition-1;
+		if(this.isUnderMinimumCapacity()){
+			console.log(" - UNDER CAPACITY " + father.keys[0] + " " + father.numberKeys());
+			if(father.children[poisition-2] != null && father.children[poisition-2].isStableCapacity()){
+				//merge
+				console.log(" - ROTATE LEFT " + father.keys[0] + " " + father.numberKeys());
+				//father.children[poisition-2].merge(this);
+			}else if(father.children[poisition-1].isStableCapacity()){
+				//merge
+				console.log(" - ROTATE RIGHT " + father.keys[0] + " " + father.numberKeys());
+				//this.merge(father.children[poisition]);
+			}else if(father.children[poisition-3] != null ){
+				console.log(" - BALANCEAR IZQUIERDA" + father.children[poisition-2].keys[0] + " " + father.numberKeys())
+				father.children[poisition-2].merge(this);
+			}else if(this.isEmpty() && father.children[prev] != null ){ //poisition -1
+				console.log(" - BALANCEAR IZQUIERDAAA?? " + this.keys[0] + " " + father.children[prev].keys[0] + " " +  father.numberKeys());
+				//this.merge(father.children[poisition-1]);
+				father.children[prev].merge(this);
+				return NEED_TO_REORDER;
+			}else if(father.children[poisition -1] != null ){ //poisition -1
+				console.log(" - BALANCEAR DERECHA " + this.keys[0] + " " + father.children[poisition-1].keys[0] + " " +  father.numberKeys());
+				this.merge(father.children[poisition-1]);
+				return NEED_TO_REORDER;
 			}
+			return false;
+		}
 			
 		//}catch(war){
 			//
@@ -145,8 +153,16 @@ class Node extends PNode {
 		
 	}
 	merge = function(nodeNext){
-		this.keys = this.keys.concat(nodeNext.children[0].keys[0]).concat(nodeNext.keys);
-		this.children = this.children.concat(nodeNext.children);
+		if(this.isEmpty()){
+			console.log(" MERGE NODE EMPTY" + this.numberKeys());
+			//this.keys = this.keys.concat(nodeNext.children[0].keys[0]).concat(nodeNext.keys);
+			//this.children = this.children.concat(nodeNext.children);
+		}else{
+			console.log(" MERGE NODE " + this.numberKeys());
+			this.keys = this.keys.concat(nodeNext.children[0].keys[0]).concat(nodeNext.keys);
+			this.children = this.children.concat(nodeNext.children);
+		}
+		
 		//nodeNext = null;
 		//this.next = this.next.next;
 		return true;
