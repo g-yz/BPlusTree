@@ -1,0 +1,91 @@
+:root {
+	--primary-color: #01579b;
+	--primary-light: #4f83cc;
+	--primary-dark: #002f6c;
+	--primary-text: #ffffff;
+
+	--secondary-color: #ffd600;
+	--secondary-light: #ffff52;
+	--secondary-dark: #c7a500;
+	--secondary-text: #000000;
+	
+	--background-light: #f5f5f5;
+	--background-dark: #e0e0e0;
+}
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background: var(--background-light);
+  width: 100vw;
+  height: 100vh;
+}
+
+header, footer {
+  padding: 2rem;  
+  display: grid;
+  place-items:  center;
+}
+
+header {
+  background: var(--primary-color);
+  color: var(--primary-text);
+}
+
+footer {
+	background: var(--primary-color);
+	color: var(--primary-text);
+	
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.flex > div {
+  flex: 1 1 160px;
+  margin: 10px;
+}
+
+.menu > div {
+  background-color: var(--background-dark);
+  font-weight: bold;
+  font-family: Baloo, sans-serif;
+  font-size: 0.75rem;
+  padding: 7px;
+  text-align: center;
+}
+
+.tree > div {
+  background-color: var(--background-dark);
+  font-weight: bold;
+  font-family: Baloo, sans-serif;
+  font-size: 1.157rem;
+  padding: 10px;
+  text-align: center;
+}
+
+button {
+  background-color: var(--secondary-light); 
+  color: black; 
+  border: 2px solid var(--secondary-light);
+  width: 70px;
+  
+}
+button:hover {
+  background-color: var(--secondary-dark);
+  color: white;  
+  border: 2px solid var(--secondary-dark);
+  
+}
+input {
+	width: 75px;
+}

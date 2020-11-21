@@ -4,40 +4,52 @@
 	<title>B+ Tree</title>
 	<meta charset='utf-8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-	header {
-	  background-color: #2196F3;
-	  padding: 30px;
-	  text-align: center;
-	  font-size: 35px;
-	  color: white;
-	}
-	section {
-	  background-color: #E3F2FD;
-	  padding: 10px;
-	  text-align: center;
-	  color: #0D47A1;
-	}
-	footer {
-	  background-color: #2196F3;
-	  padding: 10px;
-	  text-align: center;
-	  color: white;
-	}
-	</style>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body >
+<body>
 
 <header>
-  <h2>B+ Tree</h2>
+	<h1>B+ Tree</h1>
 </header>
+<main>
 
-<section>
-	<h2>Insert</h2>
-	<h2>Delete</h2>
-	<h2>Search</h2>
-</section>
+	<div class="menu flex">
+		<div>
+			<label> <input id="tree" type="number" value="4"></label>
+			<button id="init_button" onclick="init(3)">Init</button>
+		</div>
+		<div>
+			<label> <input id="tree" type="number" value="4"></label>
+			<button id="insert_button" onclick="insert(3)">Insert</button>
+		</div>
+		<div>
+			<label> <input id="tree" type="number" value="2"></label>
+			<button id="remove_button" onclick="remove(3)">Remove</button>
+		</div>
+		<div>
+			<input id="tree" type="number" value="4">
+			<button id="find_button" onclick="find(3)">Find</button>
+		</div>
+		<div>
+			<button id="ins_button" onclick="ins(3)">Random</button>
+		</div>
+		<div>
+			<button id="ins_button" onclick="ins(3)">Clear</button>
+		</div>
+		<!--<div>Clear</div>-->
+	</div>
+	<div class="tree flex">
+	  <div id="tree">Show Tree ... </div>
+	</div>
+	<div class="tree flex">
+	  <div>
+		<textarea readonly id="out" cols="150" rows="10"></textarea>
+	  </div>
+	</div>
+</main>
 <footer>
+	<h5>Gladys Calle</h5>
 </footer>
+
 </body>
 </html>
