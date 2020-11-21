@@ -26,7 +26,7 @@ function find(keys, degree) {
     window.b_plus_tree.search(keys);
     draw();
 }
-function random(degree){
+function random3(degree){
     //clear();
     checkTreeIsInited(degree);
     let numberKeys = Math.floor(Math.random() * 30);
@@ -91,8 +91,26 @@ function insert2(keys) {
     draw();
     window.b_plus_tree.search(79);
 }
-function random3(){
+function random(degree){
+    checkTreeIsInited(degree);
+    window.b_plus_tree.insert(0);
+    window.b_plus_tree.insert(1);
+    window.b_plus_tree.insert(2);
+    window.b_plus_tree.insert(4);
+
+    window.b_plus_tree.insert(5);
+    window.b_plus_tree.insert(5);
+    window.b_plus_tree.insert(8);
+    window.b_plus_tree.insert(8);
+    window.b_plus_tree.insert(8);
+
+    window.b_plus_tree.insert(9);
     window.b_plus_tree.insert(10);
+    window.b_plus_tree.insert(13);
+
+    //window.b_plus_tree.insert(10);
+    //window.b_plus_tree.insert(10);
+    /*window.b_plus_tree.insert(10);
     window.b_plus_tree.insert(22);
     window.b_plus_tree.insert(16);
     window.b_plus_tree.insert(19);
@@ -131,6 +149,6 @@ function random3(){
     window.b_plus_tree.insert(52);
     window.b_plus_tree.insert(56);
     window.b_plus_tree.insert(59);
-    window.b_plus_tree.insert(58); 
+    window.b_plus_tree.insert(58); */
     draw();
 }  
