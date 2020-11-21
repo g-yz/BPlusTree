@@ -17,13 +17,23 @@ function insert(keys, degree) {
     draw();
 }
 function remove(keys, degree) {
-    //To do
+    checkTreeIsInited(degree);
+    window.b_plus_tree.remove(keys);
+    draw();
 }
 function find(keys, degree) {
-    //To do
+    checkTreeIsInited(degree);
+    window.b_plus_tree.search(keys);
+    draw();
 }
 function random(degree){
-    //To do
+    //clear();
+    checkTreeIsInited(degree);
+    let numberKeys = Math.floor(Math.random() * 30);
+    for (let i=0; i<numberKeys; i++) {
+        window.b_plus_tree.insert(Math.floor(Math.random() * 1000)); 
+    }
+    draw();
 }
 function clear(degree){
     init(degree);
@@ -65,6 +75,22 @@ function tryInitialize(degree) {
 
 /***** ***** Test ... ***** *****/
 
+function insert2(keys) {
+    //checkTreeIsInited();
+    //keys.forEach(function(9) {window.b_plus_tree.root.insert(9); });
+    //window.b_plus_tree.insert(1);
+    //window.b_plus_tree.insert(random());
+    random();
+    
+    window.b_plus_tree.delete(8);
+    window.b_plus_tree.delete(5);
+    window.b_plus_tree.delete(7);
+    window.b_plus_tree.delete(10);
+    window.b_plus_tree.printLeaves();
+    window.b_plus_tree.validateReferentialIntegrityLeaves();
+    draw();
+    window.b_plus_tree.search(79);
+}
 function random3(){
     window.b_plus_tree.insert(10);
     window.b_plus_tree.insert(22);
