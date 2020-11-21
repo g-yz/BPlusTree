@@ -12,10 +12,13 @@
 	<h1>B+ Tree</h1>
 </header>
 <main>
+	
 	<div class="menu flex">
 		<div>
-			<label> <input id="degree" type="number" value="4"></label>
-			<button id="init_button" onclick="init(readInput10('degree'))">Init</button>
+			<form onsubmit="return false">
+				<label> <input id="degree" type="number" min="3" max="100" value="4"></label>
+				<button id="init_button" onclick="init(readInput10('degree'))">Init</button>
+			</form>
 		</div>
 		<div>
 			<label> <input id="input_insert" type="number" value="4"></label>

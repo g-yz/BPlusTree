@@ -15,15 +15,15 @@ function deleteSlice(origin, posicion){
 	//this.keys = this.keys.slice(0, i).concat(K).concat(this.keys.slice(i,this.numberKeys()));
 };
 class PNode {
-	constructor(keys, M, T) {
+	constructor(keys, degree, type) {
 		this.keys = keys !== null ? keys : []; 
-		this.M = M;
-		this.maxNumberKeys = M-1;
-		this.minNumberKeys = Math.floor(M/2);
-		this.T = T;
+		this.DEGREE = degree > 2 ? degree : 3;
+		this.maxNumberKeys = this.DEGREE-1;
+		this.minNumberKeys = Math.floor(this.DEGREE/2);
+		this.type = type;
 	}
 	isLeaf = function() {
-		return this.T
+		return this.type;
 	};
 	numberKeys = function() {
 		return this.keys.length;
@@ -74,8 +74,8 @@ class PNode {
 };
 
 class Node extends PNode {
-	constructor(keys, children, M) {
-		super(keys, M, 0);
+	constructor(keys, children, degree) {
+		super(keys, degree, 0);
 		//this.children = [];
 		this.children = children !== null ? children : []; 
 	}
@@ -141,7 +141,7 @@ class Node extends PNode {
 		this.partChildren2 = this.children.slice(this.partSize1+1, this.children.length);
 		this.children = this.partChildren1;
 		//this.newNode.children = this.partChildren2;
-		this.newNode = new Node(this.part2, this.partChildren2, this.M);
+		this.newNode = new Node(this.part2, this.partChildren2, this.DEGREE);
 		return {newNode: this.newNode, keyUp: keyUp};		
 	}
 	walk = function(counter, writer) {
@@ -274,7 +274,7 @@ class LeafNode extends PNode  {
 
 		//Update references
 		//this.next = new LeafNode(this.part2, null, this.LeafNode, this.M);
-		this.newNode = new LeafNode(part2, this.next, this, this.M);
+		this.newNode = new LeafNode(part2, this.next, this, this.DEGREE);
 		console.log(" DIVIDIR NODO " + this.newNode.keys[0]);
 		//if(this.next != null && this.next.next != null){
 		//	this.next.next = this.newNode;
@@ -340,9 +340,9 @@ class LeafNode extends PNode  {
 //******************************** Tree ********************************
 
 class BPlusTree {
-	constructor(M) {
-		this.M = M;
-		this.leaves = new LeafNode(null, null, null, M);
+	constructor(degree) {
+		this.DEGREE = degree > 2 ? degree : 3;
+		this.leaves = new LeafNode(null, null, null, this.DEGREE);
 		this.root = this.leaves;
 	}
 	insert = function(K) {
@@ -374,7 +374,7 @@ class BPlusTree {
 					//this.root.insert(K);
 					node.insert(K);
 					node.spliceLeaf();
-					this.new = new Node([], [], this.M); 
+					this.new = new Node([], [], this.DEGREE); 
 					this.new.children[0] = node;
 					this.new.children[1] = node.next;
 					this.new.keys.push(node.next.keys[0])
@@ -400,7 +400,7 @@ class BPlusTree {
 			if(this.root.maxNumberKeys +1 <= this.root.keys.length ){
 				//console.log(node.numberKeys() + "%%%")
 				let {newNode, keyUp} = node.spliceNode();
-				this.new = new Node([], [], this.M); 
+				this.new = new Node([], [], this.DEGREE); 
 				this.new.children[0] = node;
 				this.new.children[1] = newNode;
 				this.new.keys.push(keyUp);
