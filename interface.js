@@ -19,6 +19,7 @@ function insert(keys, degree) {
 function remove(keys, degree) {
     checkTreeIsInited(degree);
     window.b_plus_tree.remove(keys);
+    window.b_plus_tree.validateReferentialIntegrityLeaves();
     draw();
 }
 function find(keys, degree) {
@@ -93,6 +94,17 @@ function insert2(keys) {
 }
 function random(degree){
     checkTreeIsInited(degree);
+    /* TEST DELETE
+    window.b_plus_tree.insert(0);
+    window.b_plus_tree.insert(1);
+    window.b_plus_tree.insert(2);
+    window.b_plus_tree.insert(4);
+
+    window.b_plus_tree.insert(5);
+    window.b_plus_tree.insert(6);
+    */
+    
+    
     window.b_plus_tree.insert(0);
     window.b_plus_tree.insert(1);
     window.b_plus_tree.insert(2);
@@ -107,7 +119,7 @@ function random(degree){
     window.b_plus_tree.insert(9);
     window.b_plus_tree.insert(10);
     window.b_plus_tree.insert(13);
-
+    
     //window.b_plus_tree.insert(10);
     //window.b_plus_tree.insert(10);
     /*window.b_plus_tree.insert(10);
