@@ -8,37 +8,44 @@ function initTree(m) {
 	var b_plus_tree = window.b_plus_tree = new BPlusTree(m);
 }
 function draw() {
-    var dot = document.getElementById("out").value = window.b_plus_tree.drawTree();  
+    let dot = document.getElementById("out").value = window.b_plus_tree.drawTree();  
     document.getElementById("tree_view").innerHTML = Viz(dot, "svg");
 }
 function insert(keys, degree) {
-    checkTreeIsInited(degree);
-    window.b_plus_tree.insert(keys);
-    draw();
+    if(checkEmpty(keys)){ return; }
+    if(checkTreeIsInited(degree)){
+        window.b_plus_tree.insert(keys);
+        draw();
+    }
 }
 function remove(keys, degree) {
-    checkTreeIsInited(degree);
-    window.b_plus_tree.remove(keys);
-    window.b_plus_tree.validateReferentialIntegrityLeaves();
-    draw();
+    if(checkEmpty(keys)){ return; }
+    if(checkTreeIsInited(degree)){
+        window.b_plus_tree.remove(keys);
+        window.b_plus_tree.validateReferentialIntegrityLeaves();
+        draw();
+    } 
 }
 function find(keys, degree) {
-    checkTreeIsInited(degree);
-    window.b_plus_tree.search(keys);
-    draw();
+    if(checkEmpty(keys)){ return; }
+    if(checkTreeIsInited(degree)){
+        checkTreeIsInited(degree);
+        window.b_plus_tree.search(keys);
+        draw();
+    }
 }
 function random3(degree){
     //clear();
-    checkTreeIsInited(degree);
-    let numberKeys = Math.floor(Math.random() * 30);
-    for (let i=0; i<numberKeys; i++) {
-        window.b_plus_tree.insert(Math.floor(Math.random() * 1000)); 
+    if(checkTreeIsInited(degree)){
+        let numberKeys = Math.floor(Math.random() * 30);
+        for (let i=0; i<numberKeys; i++) {
+            window.b_plus_tree.insert(Math.floor(Math.random() * 1000)); 
+        }
+        draw();
     }
-    draw();
 }
-function clear(degree){
+function clear_tree(degree){
     init(degree);
-    draw();
 }
 
 /***** ***** Auxiliary functions ***** *****/
@@ -58,22 +65,29 @@ function isNumber(n) {
 function checkTreeIsInited(degree) {
     if (typeof(window.b_plus_tree) === "undefined") {
         alert("Tree uninitalized!");
-        tryInitialize(degree);
+        return tryInitialize(degree);
     }
+    return true;
 }
 function tryInitialize(degree) {
-    var text = "Tree uninitalized! Do you want to initialize it? Enter tree grade";
-    var newDegree = prompt(text, degree);
+    let text = "Tree uninitalized! Do you want to initialize it? Enter tree grade";
+    let newDegree = prompt(text, degree);
+    let status = false;
     if(newDegree > 1){
         init(newDegree);
         document.getElementById("degree").value = newDegree;
         text = "Tree initalized!. Degree " + newDegree;
+        status = true;
     }else{
         text = "The tree has not been initialized..";
+        status = false;
     }
     window.alert(text);
+    return status;
 }
-
+function checkEmpty(strValue){
+    return (strValue == "") ? true: false;
+}
 /***** ***** Test ... ***** *****/
 
 function insert2(keys) {
@@ -92,75 +106,353 @@ function insert2(keys) {
     draw();
     window.b_plus_tree.search(79);
 }
+function random_tes1(degree){
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        /* TEST DELETE
+        window.b_plus_tree.insert(0);
+        window.b_plus_tree.insert(1);
+        window.b_plus_tree.insert(2);
+        window.b_plus_tree.insert(4);
+
+        window.b_plus_tree.insert(5);
+        window.b_plus_tree.insert(6);
+        */
+        
+       window.b_plus_tree.insert('s');
+       window.b_plus_tree.insert('e');
+       window.b_plus_tree.insert('h');
+       window.b_plus_tree.insert('k');
+
+       window.b_plus_tree.insert('a');
+       window.b_plus_tree.insert('w');
+       window.b_plus_tree.insert('b');
+       window.b_plus_tree.insert('v');
+       
+        window.b_plus_tree.insert(0);
+        window.b_plus_tree.insert(1);
+        window.b_plus_tree.insert(2);
+        window.b_plus_tree.insert(4);
+
+        window.b_plus_tree.insert(5);
+        window.b_plus_tree.insert(5);
+        window.b_plus_tree.insert(8);
+        window.b_plus_tree.insert(8);
+        window.b_plus_tree.insert(8);
+
+        window.b_plus_tree.insert(9);
+        window.b_plus_tree.insert(10);
+        window.b_plus_tree.insert(13);
+        
+        //window.b_plus_tree.insert(10);
+        //window.b_plus_tree.insert(10);
+        /*window.b_plus_tree.insert(10);
+        window.b_plus_tree.insert(22);
+        window.b_plus_tree.insert(16);
+        window.b_plus_tree.insert(19);
+        window.b_plus_tree.insert(18);
+
+        window.b_plus_tree.insert(1);
+        window.b_plus_tree.insert(2);
+        window.b_plus_tree.insert(6);
+        window.b_plus_tree.insert(9);
+        window.b_plus_tree.insert(8);
+
+        window.b_plus_tree.insert(3);
+        window.b_plus_tree.insert(4);
+        window.b_plus_tree.insert(5);
+        window.b_plus_tree.insert(7);
+        window.b_plus_tree.insert(15);
+        window.b_plus_tree.insert(12);
+        window.b_plus_tree.insert(16);
+        window.b_plus_tree.insert(17);
+        window.b_plus_tree.insert(14);
+        window.b_plus_tree.insert(13);
+        window.b_plus_tree.insert(21);
+        window.b_plus_tree.insert(29);
+        window.b_plus_tree.insert(31);
+        window.b_plus_tree.insert(32);
+        window.b_plus_tree.insert(33);
+        window.b_plus_tree.insert(34);
+
+        window.b_plus_tree.insert(41);
+        window.b_plus_tree.insert(42);
+        window.b_plus_tree.insert(46);
+        window.b_plus_tree.insert(49);
+        window.b_plus_tree.insert(48);
+
+        window.b_plus_tree.insert(51);
+        window.b_plus_tree.insert(52);
+        window.b_plus_tree.insert(56);
+        window.b_plus_tree.insert(59);
+        window.b_plus_tree.insert(58); */
+        draw();
+    }
+}  
+
+function random_t(degree){
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        window.b_plus_tree.insert('s');
+        window.b_plus_tree.insert('e');
+        window.b_plus_tree.insert('h');
+        window.b_plus_tree.insert('k');
+ 
+        window.b_plus_tree.insert('a');
+        window.b_plus_tree.insert('w');
+        window.b_plus_tree.insert('b');
+        window.b_plus_tree.insert('v');
+        
+         window.b_plus_tree.insert(0);
+         window.b_plus_tree.insert(1);
+         window.b_plus_tree.insert(2);
+         window.b_plus_tree.insert(4);
+ 
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.insert(8);
+         //window.b_plus_tree.insert(8);
+        draw();
+    }
+}  
+
 function random(degree){
-    checkTreeIsInited(degree);
-    /* TEST DELETE
-    window.b_plus_tree.insert(0);
-    window.b_plus_tree.insert(1);
-    window.b_plus_tree.insert(2);
-    window.b_plus_tree.insert(4);
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        
+         window.b_plus_tree.insert(0);
+         window.b_plus_tree.insert(1);
+         window.b_plus_tree.insert(2);
+         window.b_plus_tree.insert(3);
+         window.b_plus_tree.insert(4);
 
-    window.b_plus_tree.insert(5);
-    window.b_plus_tree.insert(6);
-    */
-    
-    
-    window.b_plus_tree.insert(0);
-    window.b_plus_tree.insert(1);
-    window.b_plus_tree.insert(2);
-    window.b_plus_tree.insert(4);
+         window.b_plus_tree.insert(10);
+         window.b_plus_tree.insert(11);
+         window.b_plus_tree.insert(12);
+         window.b_plus_tree.insert(13);
+         window.b_plus_tree.insert(14);         
 
-    window.b_plus_tree.insert(5);
-    window.b_plus_tree.insert(5);
-    window.b_plus_tree.insert(8);
-    window.b_plus_tree.insert(8);
-    window.b_plus_tree.insert(8);
+         window.b_plus_tree.insert(20);
+         window.b_plus_tree.insert(21);
+         window.b_plus_tree.insert(22);
+         window.b_plus_tree.insert(23);
+         window.b_plus_tree.insert(24);         
 
-    window.b_plus_tree.insert(9);
-    window.b_plus_tree.insert(10);
-    window.b_plus_tree.insert(13);
-    
-    //window.b_plus_tree.insert(10);
-    //window.b_plus_tree.insert(10);
-    /*window.b_plus_tree.insert(10);
-    window.b_plus_tree.insert(22);
-    window.b_plus_tree.insert(16);
-    window.b_plus_tree.insert(19);
-    window.b_plus_tree.insert(18);
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(6);
+         window.b_plus_tree.insert(7);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.insert(9);
+//PARTE 2
 
-    window.b_plus_tree.insert(1);
-    window.b_plus_tree.insert(2);
-    window.b_plus_tree.insert(6);
-    window.b_plus_tree.insert(9);
-    window.b_plus_tree.insert(8);
+         /*window.b_plus_tree.remove(24); 
+         window.b_plus_tree.remove(23);
+         window.b_plus_tree.remove(22);
+         window.b_plus_tree.remove(21);
+         window.b_plus_tree.remove(20);
 
-    window.b_plus_tree.insert(3);
-    window.b_plus_tree.insert(4);
-    window.b_plus_tree.insert(5);
-    window.b_plus_tree.insert(7);
-    window.b_plus_tree.insert(15);
-    window.b_plus_tree.insert(12);
-    window.b_plus_tree.insert(16);
-    window.b_plus_tree.insert(17);
-    window.b_plus_tree.insert(14);
-    window.b_plus_tree.insert(13);
-    window.b_plus_tree.insert(21);
-    window.b_plus_tree.insert(29);
-    window.b_plus_tree.insert(31);
-    window.b_plus_tree.insert(32);
-    window.b_plus_tree.insert(33);
-    window.b_plus_tree.insert(34);
+         window.b_plus_tree.remove(14); 
+         window.b_plus_tree.remove(13);
+         window.b_plus_tree.remove(12);
+         window.b_plus_tree.remove(11);
+         window.b_plus_tree.remove(10);
 
-    window.b_plus_tree.insert(41);
-    window.b_plus_tree.insert(42);
-    window.b_plus_tree.insert(46);
-    window.b_plus_tree.insert(49);
-    window.b_plus_tree.insert(48);
+         window.b_plus_tree.remove(9);
+         window.b_plus_tree.remove(8);
+         window.b_plus_tree.remove(7);
+         window.b_plus_tree.remove(6);
+         window.b_plus_tree.remove(5);
 
-    window.b_plus_tree.insert(51);
-    window.b_plus_tree.insert(52);
-    window.b_plus_tree.insert(56);
-    window.b_plus_tree.insert(59);
-    window.b_plus_tree.insert(58); */
-    draw();
+         window.b_plus_tree.remove(4);
+         window.b_plus_tree.remove(3);
+         window.b_plus_tree.remove(2);
+         window.b_plus_tree.remove(1);
+         window.b_plus_tree.remove(0);*/
+        draw();
+    }
+}  
+function random_directo_borrar(degree){
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        
+         window.b_plus_tree.insert(0);
+         window.b_plus_tree.insert(1);
+         window.b_plus_tree.insert(2);
+         window.b_plus_tree.insert(3);
+         window.b_plus_tree.insert(4);
+
+         window.b_plus_tree.insert(10);
+         window.b_plus_tree.insert(11);
+         window.b_plus_tree.insert(12);
+         window.b_plus_tree.insert(13);
+         window.b_plus_tree.insert(14);         
+
+         window.b_plus_tree.insert(20);
+         window.b_plus_tree.insert(21);
+         window.b_plus_tree.insert(22);
+         window.b_plus_tree.insert(23);
+         window.b_plus_tree.insert(24);         
+
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(6);
+         window.b_plus_tree.insert(7);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.insert(9);
+//PARTE 2
+         /*window.b_plus_tree.remove(0);
+         window.b_plus_tree.remove(1);
+         window.b_plus_tree.remove(2);
+         window.b_plus_tree.remove(3);
+         window.b_plus_tree.remove(4);
+
+         window.b_plus_tree.remove(5);
+         window.b_plus_tree.remove(6);
+         window.b_plus_tree.remove(7);
+         window.b_plus_tree.remove(8);
+         window.b_plus_tree.remove(9);
+
+         window.b_plus_tree.remove(10);
+         window.b_plus_tree.remove(11);
+         window.b_plus_tree.remove(12);
+         window.b_plus_tree.remove(13);
+         window.b_plus_tree.remove(14);         
+
+         window.b_plus_tree.remove(20);
+         window.b_plus_tree.remove(21);
+         window.b_plus_tree.remove(22);
+         window.b_plus_tree.remove(23);*/
+        // window.b_plus_tree.remove(24); 
+        draw();
+    }
+}  
+function random_TEST(degree){
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        
+         window.b_plus_tree.insert(0);
+         window.b_plus_tree.insert(1);
+         window.b_plus_tree.insert(2);
+         window.b_plus_tree.insert(3);
+         window.b_plus_tree.insert(4);
+ 
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(6);
+         window.b_plus_tree.insert(7);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.remove(9);
+
+         window.b_plus_tree.remove(0);
+         window.b_plus_tree.remove(1);
+         
+         window.b_plus_tree.remove(3);
+         window.b_plus_tree.remove(4);
+         window.b_plus_tree.remove(5);
+
+         window.b_plus_tree.remove(5);
+        draw();
+    }
+}  
+
+function random_p(degree){
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        window.b_plus_tree.insert('s');
+        window.b_plus_tree.insert('e');
+        window.b_plus_tree.insert('h');
+        window.b_plus_tree.insert('k');
+ 
+        window.b_plus_tree.insert('a');
+        window.b_plus_tree.insert('w');
+        window.b_plus_tree.insert('b');
+        window.b_plus_tree.insert('v');
+        
+         window.b_plus_tree.insert(0);
+         window.b_plus_tree.insert(1);
+         window.b_plus_tree.insert(2);
+         window.b_plus_tree.insert(4);
+ 
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.remove(8);
+
+         window.b_plus_tree.remove(0);
+         window.b_plus_tree.remove(1);
+         window.b_plus_tree.remove(2);
+         window.b_plus_tree.remove(4);
+
+         window.b_plus_tree.remove(5);
+        draw();
+    }
+}  
+
+function random_TESTDELETE(degree){
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        window.b_plus_tree.insert('s');
+        window.b_plus_tree.insert('e');
+        window.b_plus_tree.insert('h');
+        window.b_plus_tree.insert('k');
+ 
+        window.b_plus_tree.insert('a');
+        window.b_plus_tree.insert('w');
+        window.b_plus_tree.insert('b');
+        window.b_plus_tree.insert('v');
+        
+         window.b_plus_tree.insert(0);
+         window.b_plus_tree.insert(1);
+         window.b_plus_tree.insert(2);
+         window.b_plus_tree.insert(4);
+ 
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.remove(8);
+        draw();
+    }
+}  
+
+function random_text(degree){
+    if(checkTreeIsInited(degree)){
+        
+        checkTreeIsInited(degree);
+        window.b_plus_tree.insert('s');
+        window.b_plus_tree.insert('e');
+        window.b_plus_tree.insert('h');
+        window.b_plus_tree.insert('k');
+ 
+        window.b_plus_tree.insert('a');
+        window.b_plus_tree.insert('w');
+        window.b_plus_tree.insert('b');
+        window.b_plus_tree.insert('v');
+        
+         window.b_plus_tree.insert(0);
+         window.b_plus_tree.insert(1);
+         window.b_plus_tree.insert(2);
+         window.b_plus_tree.insert(4);
+ 
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(5);
+         window.b_plus_tree.insert(8);
+         window.b_plus_tree.insert(8);
+         //window.b_plus_tree.insert(8);
+
+         window.b_plus_tree.remove(0);
+         window.b_plus_tree.remove(1);
+         window.b_plus_tree.remove(2);
+         window.b_plus_tree.remove(4);
+
+         window.b_plus_tree.remove(5);
+        draw();
+    }
 }  

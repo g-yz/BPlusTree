@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
+<body class="App">
 
 <header>
 	<h1>B+ Tree</h1>
@@ -15,30 +15,37 @@
 	<div class="menu flex">
 		<div>
 			<form onsubmit="return false">
-				<label> <input id="degree" type="number" min="3" max="100" value="4"></label>
+				<label> <input id="degree" type="number" min="3" max="100" value="4" required></label>
 				<button id="init_button" onclick="init(readInput10('degree'))">Init</button>
 			</form>
 		</div>
 		<div>
-			<label> <input id="input_insert" type="number" value="4"></label>
-			<button id="insert_button" onclick="insert(readInput('input_insert'),readInput10('degree'))">Insert</button>
+			<form onsubmit="return false">
+				<label> <input id="input_insert" type="number" value="4" required></label>
+				<button id="insert_button" onclick="insert(readInput('input_insert'),readInput10('degree'))">Insert</button>
+			</form>
 		</div>
 		<div>
-			<label> <input id="input_remove" type="number" value="2"></label>
-			<button id="remove_button" onclick="remove(readInput('input_remove'),readInput10('degree'))">Remove</button>
+			<form onsubmit="return false">
+				<label> <input id="input_remove" type="number" value="2" required></label>
+				<button id="remove_button" onclick="remove(readInput('input_remove'),readInput10('degree'))">Remove</button>
+			</form>
 		</div>
 		<div>
-			<input id="input_find" type="number" value="4">
-			<button id="find_button" onclick="find(readInput('input_find'),readInput10('degree'))">Find</button>
+			<form onsubmit="return false">
+				<input id="input_find" type="number" value="4" required>
+				<button id="find_button" onclick="find(readInput('input_find'),readInput10('degree'))">Find</button>
+			</form>
 		</div>
 		<div>
 			<button id="random_button" onclick="random(readInput10('degree'))">Random</button>
 		</div>
 		<div>
-			<button id="clear_button" onclick="clear(readInput10('degree'))">Clear</button>
+			<button id="clear_button" onclick="clear_tree(readInput10('degree'))">Clear</button>
 		</div>
 	</div>
-	<div class="tree content flex">
+
+	<div class="tree content flex">		
 	  <div id="tree_view">Show Tree ... </div>
 	</div>
 	<div class="content flex">
