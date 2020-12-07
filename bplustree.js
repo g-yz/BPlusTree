@@ -120,20 +120,22 @@ class Node extends PNode {
 	 ** DELETE **
 	**/
 	delete(K, index_child, poisition, father){
-		console.log(" >> DELETE NODE * " + this.keys[0] + " POSICION FATHER : " + poisition + " POSITION CHILDREN " + index_child);
+		//console.log(" >> DELETE NODE * " + this.keys[0] + " POSICION FATHER : " + poisition + " POSITION CHILDREN " + index_child);
+		//ITS ROOT
 		if(father == null){
 			if(this.numberKeys() == 1){
-				console.log(" SOLO HAY UNO EN EL ROOT");
+				//console.log(" SOLO HAY UNO EN EL ROOT");
 				/*if(this.children.length > 1){
 					return false;
 				}else{
 					return true;
 				}*/
-				return true;
+				return NEED_TO_REORDER;
 			} else{
-				console.log(" TERMINAR DELTE CON EL BORRADO EN EL ROOT " + index_child + " " +this.keys[0]);
+				//console.log(" TERMINAR DELTE CON EL BORRADO EN EL ROOT " + index_child + " " +this.keys[0]);
 				
 				//this.children[index_child] = null;
+				//REMOVE LEFT
 				if(this.keys[index_child-1] <= K){  // DERECHA
 					this.keys = deleteSlice(this.keys, index_child-1);
 					console.log(" ES IGUAL ");
@@ -146,7 +148,7 @@ class Node extends PNode {
 
 				//this.keys = deleteSlice(this.keys, index_child -1);
 				//this.children = deleteSlice(this.children, index_child );
-				return false;
+				return NO_NEED_TO_REORDER;
 			}
 		}
 		//console.log(" DELETE NODE");
@@ -163,7 +165,7 @@ class Node extends PNode {
 		var next = poisition+1;
 		var prev = poisition-1;
 		//console.log(" __ MERGE EMPTY ?? " + this.keys[0]);
-		if(this.isEmpty()){
+		if(this.isEmpty() || this.isUnderMinimumCapacity()){
 			//this.prev.next = this.next;
 			//this.next.prev = this.prev;
 
@@ -194,57 +196,35 @@ class Node extends PNode {
 			}
 			return NEED_TO_REORDER;
 		}
-
-		if(this.isUnderMinimumCapacity()){
-			console.log(" NODE IS UNDER MINUM ");
-			//console.log(" - UNDER CAPACITY " + father.keys[0] + " " + father.numberKeys());
-			if(father.children[poisition-2] != null && father.children[poisition-2].isStableCapacity()){
-				//merge
-				//console.log(" - ROTATE LEFT " + father.keys[0] + " " + father.numberKeys());
-				//father.children[poisition-2].merge(this);
-			}else if(father.children[prev] != null && father.children[prev].isStableCapacity()){
-				//merge
-				//console.log(" - ROTATE RIGHT " + father.keys[0] + " " + father.numberKeys());
-				//this.merge(father.children[poisition]);
-			}else if(father.children[poisition-3] != null ){
-				//console.log(" - BALANCEAR IZQUIERDA" + father.children[poisition-2].keys[0] + " " + father.numberKeys())
-				father.children[poisition-2].merge(this);
-			}else if(this.isEmpty() && father.children[prev] != null ){ //poisition -1
-				//console.log(" - BALANCEAR IZQUIERDAAA?? " + this.keys[0] + " " + father.children[prev].keys[0] + " " +  father.numberKeys());
-				//this.merge(father.children[poisition-1]);
-				father.children[prev].merge(this);
-				return NEED_TO_REORDER;
-			}else if(father.children[poisition -1] != null ){ //poisition -1
-				//console.log(" - BALANCEAR DERECHA " + this.keys[0] + " " + father.children[poisition-1].keys[0] + " " +  father.numberKeys());
-				this.merge(father.children[poisition-1]);
-				return NEED_TO_REORDER;
-			}else if(father.children[next] != null ){ //poisition -1
-				//console.log(" - merge a la DERECHA " + this.keys[0] + " " + father.children[next].keys[0] + " " +  father.numberKeys());
-				this.merge(father.children[next]);
-				return NEED_TO_REORDER;
-			}
+		return NO_NEED_TO_REORDER;	
+	}
+	remove(node, father,n, K) {
+		if ( node == null){
 			return false;
 		}
-
-		return false;	
-	}
+		
+		console.log(" - DELETE NODE " + K);
+		let i = node.findChildSlot_remove(K);
+		console.log(" - DESCENDER POR EL NODO " + i);
+		//this._remove(node.children[i],node,i,K);
+		if(node.children[i].remove(node.children[i],node,i,K)){
+			/*node.delete(K, i, father);
+			if(node == this.root){
+				this.root = node.children[0];
+			}*/
+			return node.delete(K, i, n, father);
+		}
+		//return false;
+		//return this._remove(node.children[i],node,i,K);
+		
+	};
 	rotateLeft(next){
-		//console.log(" >> ROTATE LEFT");
-		//this.keys = this.keys.concat(next.keys[0]);
 		this.keys = this.keys.concat(next.children[0].keys[0]);
 		next.keys.shift();
 		this.children = this.children.concat(next.children[0]);
 		next.children.shift();
 	};
 	rotateRight(prev){
-		//console.log(" >> ROTATE LEFT");
-		//this.keys = this.keys.concat(next.keys[0]);
-		/*this.keys = this.keys.concat(next.children[0].keys[0]);
-		next.keys.shift();
-		this.children = this.children.concat(next.children[0]);
-		next.children.shift();*/
-
-		//
 		this.keys = [].concat(this.children[0].keys[0]).concat(this.keys);
 		this.children = [].concat(prev.children[prev.numberKeys()]).concat(this.children);
 		prev.keys.pop();
@@ -364,97 +344,115 @@ class LeafNode extends PNode  {
 	 ** DELETE **
 	**/
 	delete(K, index, father) {
-		console.log(" - DELETE hoja " );
+		//Buscar donde esta la clave
 		for (var i=0; i<this.numberKeys(); i++) {
 			if (this.keys[i] == K) { //FOUND
 				this.keys = deleteSlice(this.keys, i);
-				
-				if(this.isEmpty()){ //NODE IS EMPTY
-					console.log(" -* DELETE NODE IS EMPTY LEAF " );
+				//NODE IS EMPTY
+				console.log("NODE IS EMPTY");
+				if(this.isEmpty()){ 
+					//FISRT LEAF OF A BRANCH
 					if(index == 0){
-						
-						console.log(" ] 0 - DELETE NODE IS EMPTY LEAF " );
-						if(this.next!=null && this.next.isStableCapacity()){ //this.next.isFull()){
-							console.log(" - FIRST THEN ROTATE LEFT " + K);
+						//ROTATE LEAF IF NEXT NODE IS STABLE
+						if(this.next!=null && this.next.isStableCapacity()){
 							this.rotateLeft();
 							father.keys[index] = this.next.keys[0];
-							console.log(" INDEX " + index + " " + this.next.keys[0]);
 							return NO_NEED_TO_REORDER;
+						//REMOVE REFERENCES, NODE IS EMPTY
 						}else{
-							//this.prev.next = this.next;
+							if(this.prev!=null){
+								this.prev.next = this.next;
+							}
 							this.next.prev = this.prev;
+							return NEED_TO_REORDER;
 						}
+					//LAST LEAF OF A BRANCH
 					}else if(father!=null  && index == father.numberKeys()){
-						console.log("AL PARECER ES EL ULTIMO" );
+						//ROTATE RIGHT IF PREV NODE IS STABLE
 						if(this.prev!=null && this.prev.isStableCapacity()){
-							console.log(" - LAST THEN ROTATE RIGHT " + K);
 							this.rotateRight();
 							father.keys[index-1] = father.children[index].keys[0];
 							return NO_NEED_TO_REORDER;
+						//REMOVE REFERENCES, NODE IS EMPTY
 						}else{
 							this.prev.next = this.next;
-							//this.next.prev = this.prev;
+							if(this.next!= null){
+								this.next.prev = this.prev;
+							}
 							return NEED_TO_REORDER;
 						}
+					//INTERMEDIATE LEAF OF A BRANCH
 					}else{
-						console.log(" ]]] DELETE NODE IS EMPTY LEAF " );
-						if(this.next!=null && this.next.isStableCapacity()){ //this.next.isFull()){
-							console.log(" - INTERMEDIATE NEXT THEN ROTATE LEFT " + K);
+						//ROTATE LEAF IF NEXT NODE IS STABLE
+						if(this.next!=null && this.next.isStableCapacity()){
 							this.rotateLeft();
 							father.keys[index] = this.next.keys[0];
-							console.log(" INDEX " + index + " " + this.next.keys[0]);
 							return NO_NEED_TO_REORDER;
+						//ROTATE RIGHT IF PREV NODE IS STABLE
 						}else if(this.prev!=null && this.prev.isStableCapacity()){
-							console.log(" - INTRMEDIATE PREV THEN ROTATE RIGHT " + K);
 							this.rotateRight();
+							father.keys[index-1] = father.children[index].keys[0];
 							return NO_NEED_TO_REORDER;
+						//REMOVE REFERENCES, NODE IS EMPTY
 						}else if(this.prev!=null && this.next!=null){
 							this.prev.next = this.next;
 							this.next.prev = this.prev;
-							console.log(" BALANCEADO NO REORDENAr ");
+							return NEED_TO_REORDER;
 						}
 					}
 					
 					return NEED_TO_REORDER;
 				}
-
-				if( this.isUnderMinimumCapacity()){ //NODE IS UNDER MINIMUM CAPACITY
+				console.log("NODE IS UNDER MINIMUM CAPACITY");
+				//NODE IS UNDER MINIMUM CAPACITY
+				if( this.isUnderMinimumCapacity()){ 
 					//NEXT IS STABLE THEN ROTATE LEFT
 					if(this.next!=null && this.next.isStableCapacity()){
 						console.log(" - NEXT IS STABLE THEN ROTATE LEFT " + K);
 						this.rotateLeft();
+						father.keys[index] = this.next.keys[0];
 						return NO_NEED_TO_REORDER;
-					//NEXT IS STABLE THEN ROTATE RIGHT
+					//PREV IS STABLE THEN ROTATE RIGHT
 					}else if(this.prev!=null && this.prev.isStableCapacity()){
 						this.rotateRight();
+						father.keys[index-1] = father.children[index].keys[0];
 						//father.keys[0] = father.children[1].keys[0];
-						console.log(" - NEXT IS STABLE THEN ROTATE RIGHT " + K);
+						console.log(" - PREV IS STABLE THEN ROTATE RIGHT " + K);
 						return NO_NEED_TO_REORDER;
 					//NEXT IS NOT FULL THEN MERGE WITH NEXT
-					}else if(this.next!=null && this.next.validateFull(this.numberKeys())){
+					}else if(this.next!=null && this.next.validateNotFull(this.numberKeys()) && index != father.numberKeys() ){
 						console.log(" - NEXT IS NOT FULL THEN MERGE WITH NEXT " + K);
 						this.merge();
 						//father.keys[0] = father.children[1].keys[0];
-						return NO_NEED_TO_REORDER;
+						father.keys[index] = this.keys[0];
+						father.children[index+1] = this;
+						return NEED_TO_REORDER;
 					//PREV IS NOT FULL THEN MERGE WITH PREV
-					}else if(this.prev!=null && this.prev.validateFull(this.numberKeys())){
+					}else if(this.prev!=null && this.prev.validateNotFull(this.numberKeys()) ){
 						this.prev.merge();
 						//father.keys[0] = father.children[1].keys[0];
 						console.log(" - PREV IS NOT FULL THEN MERGE WITH PREV " + K);
-						return NO_NEED_TO_REORDER;
-					}else{
-						console.log(" - DELETE MERGE " + K);
+						return NEED_TO_REORDER;
+					}/*else{
+						console.log(" - DELETE MERGE EXCEPTION " + K);
 						this.merge();
 						return NEED_TO_REORDER;
-					}
+					}*/
 				}
-				//break;
-				console.log(" - DELETE NO REORDER " + this.isUnderMinimumCapacity() + " " + this.numberKeys() + " BORRAR " + K);
-				console.log(this.keys);
+				console.log("NODE IS STABLE");
+				//NODE IS STABLE
 				return NO_NEED_TO_REORDER;
 			}
 		}
 		return NO_NEED_TO_REORDER;
+	};
+	remove(node, father,n, K) {
+		if ( node == null){
+			return false;
+		}
+		
+		console.log(" - DELETE LEAF " + K);
+		return node.delete(K, n, father);
 	};
 	rotateLeft(){
 		//console.log(" >> ROTATE LEFT");
@@ -559,7 +557,7 @@ class BPlusTree {
 	**/	
 	remove(K) {
 		console.log(" >> DELETE " + K);
-		if(this._remove(this.root,null, null, K) && this.root.children != null){
+		if(this.root.remove(this.root,null, null, K) && this.root.children != null){
 			//console.log(" {} DELETE " + K + " " + this.root.children[0].keys[0]);
 			if(this.root.children[0].numberKeys()>0){
 				this.root = this.root.children[0];
@@ -577,6 +575,26 @@ class BPlusTree {
 		}
 		console.log(this)
 	};	
+	/*remove_PO(K) {
+		console.log(" >> DELETE " + K);
+		if(this._remove(this.root,null, null, K) && this.root.children != null){
+			//console.log(" {} DELETE " + K + " " + this.root.children[0].keys[0]);
+			if(this.root.children[0].numberKeys()>0){
+				this.root = this.root.children[0];
+			}else{
+				this.root = this.root.children[1];
+			}
+			//this.root = this.root.children[0];
+		} 
+		if(this.root.isEmpty() && !this.root.isLeaf()){
+			this.root = this.root.children[0];
+		}
+		//ACTUALIZAR REFERENCIA DE LAS HOJAS
+		if(this.leaves.isEmpty() && this.leaves.next!=null){
+			this.leaves = this.leaves.next;
+		}
+		console.log(this)
+	};
 	_remove(node, father,n, K) {
 		if ( node == null){
 			return false;
@@ -595,12 +613,12 @@ class BPlusTree {
 				if(node == this.root){
 					this.root = node.children[0];
 				}*/
-				return node.delete(K, i, n, father);
+				/*return node.delete(K, i, n, father);
 			}
 			//return false;
 			//return this._remove(node.children[i],node,i,K);
 		}
-	};
+	};*/
 	/**
 	 ** SEARCH **
 	**/
@@ -648,7 +666,7 @@ class BPlusTree {
 	validateReferentialIntegrityLeaves() {
 		let bufer = "";
 		bufer += this.leaves._printDirectLeaves();
-		//console.log(">> VALIDATE INTEGRITY : " + bufer);
+		console.log(">> VALIDATE INTEGRITY : " + bufer);
 		return    true;
 	};
 	/**
