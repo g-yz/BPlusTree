@@ -38,16 +38,16 @@ class PNode {
 	};
 	printKeys(){
 		let bufer = "";
-		for (let i=0; i<this.numberKeys(); i++) {
-			bufer += " " + this.keys[i];
+		for (let key of this.keys) {
+			bufer += " " + key;
 		}
 		return bufer;
 	} 
 	printReverseKeys(){
 		let bufer = "";
-		for (let i=this.numberKeys()-1; i>=0; i--) {
-			bufer += " " + this.keys[i];
-		} 
+		for (let key of this.keys) {
+			bufer = key + " " + bufer;
+		}
 		return bufer;
 	}
 	findChildSlot(K) {
@@ -176,9 +176,9 @@ class Node extends PNode {
 	/**
 	 ** SEARCH **
 	 */
-	_search(K) {
+	search(K) {
 		let i = this.findChildSlot(K);
-		return this.children[i]._search(K);
+		return this.children[i].search(K);
 	};
 	/**
 	 ** PRINT **
@@ -321,11 +321,10 @@ class LeafNode extends PNode  {
 	/**
 	 ** SEARCH **
 	 */
-	_search(K) {
-		for (var i=0; i<this.numberKeys(); i++) {
-			if (this.keys[i] == K) {
+	search(K) {
+		for (let key of this.keys) {
+			if (key == K)
 				return true;
-			}
 		}
 		return false;
 	};
@@ -386,8 +385,8 @@ class LeafNode extends PNode  {
 		return nodeid;
 	};
 	getMimElement(){
-		if(this.keys!=null)
-		return this.keys[0];
+		if(this.keys!=null) 
+			return this.keys[0];
 	}
 };
 //******************************** Tree ********************************
@@ -434,7 +433,7 @@ class BPlusTree {
 	**/
 	search(K){
 		console.log(" >> SEARCH " + K);
-		if(this.root._search(K)){
+		if(this.root.search(K)){
 			console.log(">> ENCONTRADO ! ");
 		}else{
 			console.log(">> NO ENCONTRADO ! ");
