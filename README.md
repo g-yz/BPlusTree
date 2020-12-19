@@ -9,7 +9,7 @@ La complejidad de búsqueda en cada nodo, es lineal. Puesto que la búsqueda se 
 
 Ahora para calcular la complejidad de búsqueda global, en todo el árbol, el tamaño del problema se va reduciendo en proporciones logarítmicas dependiendo del tamaño de hijos que se pueda tener. Cabe denotar que solo se pasa por un solo nodo en cada nivel, y se descartan todos sus nodos hermanos. Por tanto la complejidad está dada por la altura del árbol. En cuanto la altura está dada por log B(n) y en cada nodo se tiene una complejidad lineal B.
 
-![Image](https://github.com/gladyschy5/BPlusTree/blob/main/im/tree.JPG)
+![Image](https://github.com/gladyschy5/BPlusTree/blob/main/im/tree.jpg)
 
 La complejidad es logB(n)*B, pero al ser B mucho menor que el tamaño total de registros n, B<n. La influencia de B sobre la complejidad es despreciable, por tanto, podemos asumir, que una búsqueda en un árbol B+, tiene una complejidad O(log(n)).
 
