@@ -1,12 +1,16 @@
 # B+Tree
 
-![Image](im/tree.jpg)
+![Image](https://github.com/gladyschy5/BPlusTree/blob/main/im/ap.JPG)
+
 
 # Complejidad algorítmica: Search
 
 La complejidad de búsqueda en cada nodo, es lineal. Puesto que la búsqueda se sobre una lista ordenada. En el mejor de los casos la clave buscada estará al inicio, y en el peor de los casos estará al final. Entonces si el grado del árbol es B, la complejidad algorítmica será B-1, es decir O(B), solo en el nodo.
 
 Ahora para calcular la complejidad de búsqueda global, en todo el árbol, el tamaño del problema se va reduciendo en proporciones logarítmicas dependiendo del tamaño de hijos que se pueda tener. Cabe denotar que solo se pasa por un solo nodo en cada nivel, y se descartan todos sus nodos hermanos. Por tanto la complejidad está dada por la altura del árbol. En cuanto la altura está dada por log B(n) y en cada nodo se tiene una complejidad lineal B.
+
+![Image](https://github.com/gladyschy5/BPlusTree/blob/main/im/tree.JPG)
+
 La complejidad es logB(n)*B, pero al ser B mucho menor que el tamaño total de registros n, B<n. La influencia de B sobre la complejidad es despreciable, por tanto, podemos asumir, que una búsqueda en un árbol B+, tiene una complejidad O(log(n)).
 
 
@@ -407,6 +411,8 @@ Como mínimo cada nodo, debe tener ocupado al menos la mitad de su capacidad, po
 Si, B es menor que n, se hace despreciable. Por tanto el número de nodos internos será ~n. Es decir el espacio ocupado por todo el árbol será, (B*L/2)*n, donde asumiendo que n, será tan grande que las constantes no son relevantes. La complejidad de espacio del árbol será O(n).
 
 **Complejidad de espacio es O(n)**
+
+
 
 
 
