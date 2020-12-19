@@ -402,10 +402,12 @@ class LeafNode extends PNode  {
 Como mínimo cada nodo, debe tener ocupado al menos la mitad de su capacidad, por tanto (B*L/2)*(número de nodos), donde el número de nodos esta dado, por:
 
 
-![Image](im/ecu.jpg)
+![Image](https://github.com/gladyschy5/BPlusTree/blob/main/im/ecu.JPG)
 
 Si, B es menor que n, se hace despreciable. Por tanto el número de nodos internos será ~n. Es decir el espacio ocupado por todo el árbol será, (B*L/2)*n, donde asumiendo que n, será tan grande que las constantes no son relevantes. La complejidad de espacio del árbol será O(n).
 
 **Complejidad de espacio es O(n)**
+
+
 
 
