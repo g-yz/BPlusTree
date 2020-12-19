@@ -142,7 +142,6 @@ class Node extends PNode {
 					//PREV IS NOT FULL THEN MERGE WITH PREV
 					}else if(father.children[prev] != null){
 						father.children[prev].merge(this);
-						//father.children[prev] = father.children[position]; //duda actualizat
 						return NEED_TO_REORDER;
 					//NEXT IS NOT FULL THEN MERGE WITH NEXT
 					}else if(father.children[next] != null){
@@ -227,6 +226,7 @@ class LeafNode extends PNode  {
 		super(keys, M, NODE_LEAF);
 		this.next = next;
 		this.prev = prev;
+		this.current  = -1;
 	}
 	/**
 	 ** INSERT **
@@ -322,10 +322,19 @@ class LeafNode extends PNode  {
 	 ** SEARCH **
 	 */
 	search(K) {
-		for (let key of this.keys) {
-			if (key == K)
+		for (let i = 0; i < this.keys.length; i++) {
+			if (this.keys[i] == K){
+				this.current = i;
 				return true;
+			}
 		}
+		/*
+		for (let key of this.keys) {
+			if (key == K){
+				this.current = 1;
+				return true;
+			}
+		}*/
 		return false;
 	};
 	/**
@@ -378,6 +387,11 @@ class LeafNode extends PNode  {
 			var nodeidPrev = "nodeLeaf" + String(count-1) ; //borrar
 			writer.writeRefLeaves("\"" + nodeidPrev + "\" -> \"" + nodeid + "\"");
 			//writer.writeRefLeaves("\n" + "\"" + nodeid + "\" -> \"" + nodeidPrev + "\"");
+		}
+		if(this.current > -1){
+			writer.writeFound("found [fillcolor=yellow, style=\"rounded,filled\", shape=tripleoctagon]\n" +
+			"found -> \"" + nodeid + "\":f"+ this.current);
+			this.current = -1;
 		}
 		writer.prev = count;
 		writer.writeLeaves (nodeid + "; ");
@@ -432,6 +446,7 @@ class BPlusTree {
 	 ** SEARCH **
 	**/
 	search(K){
+		flagSearch = true;
 		console.log(" >> SEARCH " + K);
 		if(this.root.search(K)){
 			console.log(">> ENCONTRADO ! ");
@@ -460,7 +475,7 @@ class BPlusTree {
 	drawTree() {
 		var writer = new Writer();
 		this.root.walk(new Counter(), writer);
-		//this.leaves.walk(new Counter(), writer);
+
 		let color = "style=filled, fillcolor=2, color=9 colorscheme=blues9";
 		return    "digraph g {\n" +
 			//"labelloc=\"t\";" +
@@ -471,6 +486,8 @@ class BPlusTree {
 			writer.buf + "\n" +
 			"{ rank=same; " + writer.levelLeaves + "}\n"+
 			writer.referencesLeaves + "\n"+
+			"edge [arrowhead=vee, style=line];\n"+
+			writer.getFounded() + "\n"+
 			"}";
 	};
 	getInformation(){
@@ -479,13 +496,14 @@ class BPlusTree {
 		+ " * Minimum Degree : " + this.root.minNumberKeys;
 	};
 };
-
+var flagSearch = false;
 //********************************
 class Writer{
 	constructor(){
 		this.buf = "";
 		this.levelLeaves = "";
 		this.referencesLeaves = "";
+		this.found="";
 		this.prev = -1;
 	}
 	write(str) {
@@ -500,6 +518,16 @@ class Writer{
 	writeRefLeaves(str) {
 		this.referencesLeaves += String(str)+ "\n";
 	};
+	writeFound(str) {
+		this.found += String(str)+ "\n";	
+	};
+	getFounded(){
+		if(this.found.length < 1 && flagSearch){
+			this.found = "notFound [fillcolor=red, style=\"rounded,filled\", shape=tripleoctagon]";
+		}
+		flagSearch = false;
+		return this.found;
+	}
 }
 
 class Counter{
