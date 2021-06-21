@@ -1,67 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<title>B+ Tree</title>
-	<meta charset='utf-8'>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body class="App">
+  <head>
+    <title>B+ Tree</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body class="App">
+    <header>
+      <h1>B+ Tree</h1>
+    </header>
+    <main>
+      <div class="menu flex">
+        <div>
+          <form onsubmit="return false">
+            <label>
+              <input
+                id="degree"
+                type="number"
+                min="3"
+                max="100"
+                value="4"
+                required
+            /></label>
+            <button id="init_button" onclick="init(readInput10('degree'))">
+              Init
+            </button>
+          </form>
+        </div>
+        <div>
+          <form onsubmit="return false">
+            <label>
+              <input id="input_insert" type="number" value="4" required
+            /></label>
+            <button
+              id="insert_button"
+              onclick="insert(readInput('input_insert'),readInput10('degree'))"
+            >
+              Insert
+            </button>
+          </form>
+        </div>
+        <div>
+          <form onsubmit="return false">
+            <label>
+              <input id="input_remove" type="number" value="2" required
+            /></label>
+            <button
+              id="remove_button"
+              onclick="remove(readInput('input_remove'),readInput10('degree'))"
+            >
+              Remove
+            </button>
+          </form>
+        </div>
+        <div>
+          <form onsubmit="return false">
+            <input id="input_find" type="number" value="4" required />
+            <button
+              id="find_button"
+              onclick="find(readInput('input_find'),readInput10('degree'))"
+            >
+              Find
+            </button>
+          </form>
+        </div>
+        <div>
+          <button id="random_button" onclick="random(readInput10('degree'))">
+            Random
+          </button>
+        </div>
+        <div>
+          <button id="clear_button" onclick="clear_tree(readInput10('degree'))">
+            Clear
+          </button>
+        </div>
+      </div>
 
-<header>
-	<h1>B+ Tree</h1>
-</header>
-<main>
-	<div class="menu flex">
-		<div>
-			<form onsubmit="return false">
-				<label> <input id="degree" type="number" min="3" max="100" value="4" required></label>
-				<button id="init_button" onclick="init(readInput10('degree'))">Init</button>
-			</form>
-		</div>
-		<div>
-			<form onsubmit="return false">
-				<label> <input id="input_insert" type="number" value="4" required></label>
-				<button id="insert_button" onclick="insert(readInput('input_insert'),readInput10('degree'))">Insert</button>
-			</form>
-		</div>
-		<div>
-			<form onsubmit="return false">
-				<label> <input id="input_remove" type="number" value="2" required></label>
-				<button id="remove_button" onclick="remove(readInput('input_remove'),readInput10('degree'))">Remove</button>
-			</form>
-		</div>
-		<div>
-			<form onsubmit="return false">
-				<input id="input_find" type="number" value="4" required>
-				<button id="find_button" onclick="find(readInput('input_find'),readInput10('degree'))">Find</button>
-			</form>
-		</div>
-		<div>
-			<button id="random_button" onclick="random(readInput10('degree'))">Random</button>
-		</div>
-		<div>
-			<button id="clear_button" onclick="clear_tree(readInput10('degree'))">Clear</button>
-		</div>
-	</div>
-
-	<div class="tree content flex">		
-	  <div id="tree_view">Show Tree ... </div>
-	</div>
-	<!--<div class="content flex">
+      <div class="tree content flex">
+        <div id="tree_view">Show Tree ...</div>
+      </div>
+      <!--<div class="content flex">
 	  <div>
 		<textarea readonly id="out" cols="150" rows="10"></textarea>
 	  </div>
 	</div>-->
-</main>
-<footer>
-	<h5>Gladys Calle</h5>
-	<script src="viz.js"></script>
-	<script src="bplustree.js"></script>
-	<script src="interface.js"></script>
-	<script>
-	</script>
-</footer>
-
-</body>
+    </main>
+    <footer>
+      <h5>Todos los derechos de autor</h5>
+      <script src="viz.js"></script>
+      <script src="bplustree.js"></script>
+      <script src="interface.js"></script>
+      <script></script>
+    </footer>
+  </body>
 </html>
